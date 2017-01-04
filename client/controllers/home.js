@@ -22,9 +22,9 @@ angular.module('Instagram')
                     $window.localStorage.currentUser = JSON.stringify(response.data.user);
                     $rootScope.currentUser = JSON.parse($window.localStorage.currentUser);
                     API.getFeed()
-                    .then(function(data) {
-                        $scope.photos = data;
-                    });
+                        .then(function(data) {
+                            $scope.photos = data;
+                        });
                 })
                 .catch(function() {
                     console.log('linkeage failed2');

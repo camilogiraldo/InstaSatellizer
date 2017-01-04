@@ -48,31 +48,35 @@ app.use(express.static(path.join(__dirname, 'public'), {
 
 
 
-function ensureAuthenticated(req, res, next) {
-    if (!req.header('Authorization')) {
-        return res.status(401).send({
-            message: 'Please make sure your request has an Authorization header'
-        });
-    }
-    var token = req.header('Authorization').split(' ')[1];
+function isAuthenticated(req, res, next) {
 
-    var payload = null;
-    try {
-        payload = jwt.decode(token, config.TOKEN_SECRET);
-    } catch (err) {
-        return res.status(401).send({
-            message: err.message
+    if (!(req.headers && req.headers.authorization)) {
+        return res.status(400).send({
+            message: 'You did not provide a JSON Web Token in the Authorization header.'
         });
     }
 
-    if (payload.exp <= moment().unix()) {
+    var header = req.headers.authorization.split(' ');
+    var token = header[1];
+    var payload = jwt.decode(token, config.tokenSecret);
+    var now = moment().unix();
+    debugger;
+    if (now > payload.exp) {
         return res.status(401).send({
-            message: 'Token has expired'
+            message: 'Token has expired.'
         });
-
     }
-    req.user = payload.sub;
-    next();
+
+    User.findById(payload.sub, function(err, user) {
+        if (!user) {
+            return res.status(400).send({
+                message: 'User no longer exists.'
+            });
+        }
+
+        req.user = user;
+        next();
+    })
 }
 
 function createToken(user) {
@@ -254,7 +258,7 @@ app.post('/auth/instagram', function(req, res) {
     });
 });
 
-app.get('/api/feed', ensureAuthenticated, function(req, res) {
+app.get('/api/feed', isAuthenticated, function(req, res) {
     var feedUrl = 'https://api.instagram.com/v1/users/self/feed';
     var params = {
         access_token: req.user.accessToken
@@ -270,7 +274,7 @@ app.get('/api/feed', ensureAuthenticated, function(req, res) {
     });
 });
 
-app.get('/api/media/:id', ensureAuthenticated, function(req, res) {
+app.get('/api/media/:id', isAuthenticated, function(req, res) {
     var mediaUrl = 'https://api.instagram.com/v1/media/' + req.params.id;
     var params = {
         access_token: req.user.accessToken
@@ -287,7 +291,7 @@ app.get('/api/media/:id', ensureAuthenticated, function(req, res) {
     });
 });
 
-app.post('/api/like', ensureAuthenticated, function(req, res) {
+app.post('/api/like', isAuthenticated, function(req, res) {
     var mediaId = req.body.mediaId;
     var accessToken = {
         access_token: req.user.accessToken
