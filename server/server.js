@@ -279,7 +279,6 @@ app.get('/api/media/:id', isAuthenticated, function(req, res) {
     var params = {
         access_token: req.user.accessToken
     };
-
     request.get({
         url: mediaUrl,
         qs: params,
