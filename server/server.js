@@ -60,7 +60,6 @@ function isAuthenticated(req, res, next) {
     var token = header[1];
     var payload = jwt.decode(token, config.tokenSecret);
     var now = moment().unix();
-    debugger;
     if (now > payload.exp) {
         return res.status(401).send({
             message: 'Token has expired.'
@@ -175,7 +174,6 @@ app.post('/auth/instagram', function(req, res) {
 
         // Step 2a. Link user accounts.
         if (req.headers.authorization) {
-            debugger;
             User.findOne({
                 instagramId: body.user.id
             }, function(err, existingUser) {
@@ -259,15 +257,17 @@ app.post('/auth/instagram', function(req, res) {
 });
 
 app.get('/api/feed', isAuthenticated, function(req, res) {
-    var feedUrl = 'https://api.instagram.com/v1/users/self/feed';
+    var feedUrl = 'https://api.instagram.com/v1/users/self/media/recent/';
     var params = {
         access_token: req.user.accessToken
     };
+    debugger;
     request.get({
         url: feedUrl,
         qs: params,
         json: true
     }, function(error, response, body) {
+        debugger;
         if (!error && response.statusCode == 200) {
             res.send(body.data);
         }

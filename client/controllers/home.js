@@ -3,8 +3,9 @@ angular.module('Instagram')
 
         if ($auth.isAuthenticated() && ($rootScope.currentUser && $rootScope.currentUser.username)) {
             API.getFeed()
-                .then(function(data) {
-                    $scope.photos = data;
+                .then(function(response) {
+                    $scope.photos = response.data;
+                    console.log(response.data);
                 })
                 .catch(function() {
                     console.log('linkeage failed1 ');
@@ -22,8 +23,8 @@ angular.module('Instagram')
                     $window.localStorage.currentUser = JSON.stringify(response.data.user);
                     $rootScope.currentUser = JSON.parse($window.localStorage.currentUser);
                     API.getFeed()
-                        .then(function(data) {
-                            $scope.photos = data;
+                        .then(function(response) {
+                            $scope.photos = response.data;
                         });
                 })
                 .catch(function() {
