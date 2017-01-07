@@ -1,0 +1,31 @@
+{
+  "name": "instagram-server",
+  "version": "0.0.0",
+  "scripts": {
+    "start": "node server/server.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.0.2",
+    "body-parser": "^1.8.1",
+    "compression": "^1.6.2",
+    "cors": "^2.4.2",
+    "express": "^4.9.0",
+    "jwt-simple": "^0.2.0",
+    "moment": "^2.8.3",
+    "mongodb": "^2.1.16",
+    "mongoose": "^4.4.12",
+    "request": "^2.44.0"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-angular-templatecache": "^2.0.0",
+    "gulp-complexity": "^0.3.2",
+    "gulp-concat": "^2.6.1",
+    "gulp-csso": "^2.0.0",
+    "gulp-header": "^1.8.8",
+    "gulp-filter": "4.0.0",
+    "gulp-ng-annotate": "^2.0.0",
+    "gulp-recess": "^1.2.0",
+    "gulp-uglify": "^2.0.0"
+  }
+}
