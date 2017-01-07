@@ -261,13 +261,11 @@ app.get('/api/feed', isAuthenticated, function(req, res) {
     var params = {
         access_token: req.user.accessToken
     };
-    debugger;
     request.get({
         url: feedUrl,
         qs: params,
         json: true
     }, function(error, response, body) {
-        debugger;
         if (!error && response.statusCode == 200) {
             res.send(body.data);
         }

@@ -11,11 +11,12 @@ angular.module('Instagram')
                 console.log('Error getting media. Error desc: ' + error);
             })
 
-            $scope.like = function(){
-              $scope.hasLiked = true;
-              API.likeMedia(mediaId)
-                .catch(function(error){
-                  sweetAlert('Error', data.message, 'error');
+
+        $scope.like = function() {
+            $scope.hasLiked = true;
+            API.likeMedia(mediaId)
+                .catch(function(error) {
+                    sweetAlert('Error', data.message, 'error');
                 })
-            }
+        }
     })

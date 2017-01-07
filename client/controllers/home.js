@@ -5,7 +5,6 @@ angular.module('Instagram')
             API.getFeed()
                 .then(function(response) {
                     $scope.photos = response.data;
-                    console.log(response.data);
                 })
                 .catch(function() {
                     console.log('linkeage failed1 ');
